@@ -1,0 +1,21 @@
+arp -na
+
+from scapy.all import srp
+
+Discussion of Julia's post:
+https://news.ycombinator.com/item?id=8167546
+
+https://news.ycombinator.com/item?id=8171484
+If you're interested in writing a TCP/IP stack in Python I would recommend you use Python raw sockets, or possibly dnet[1] or pcapy[2].
+On second thought you really need to use raw sockets if you want this to work
+http://libdnet.sourceforge.net/pydoc/private/dnet-module.html
+http://corelabs.coresecurity.com/index.php?module=Wiki&action=view&type=tool&name=Pcapy
+
+Julia: http://twitter.com/b0rk, http://jvns.ca 
+
+Books:
+TCP/IP Illustrated, Richard Stevens
+The TCP/IP Guide, Charles Kozierok
+
+TCP/IP stack in Common Lisp. http://lukego.livejournal.com/4993.html 
+
