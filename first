@@ -1,0 +1,15 @@
+osi vs tcp/ip models
+define model layers for this project
+divide project into layers
+python
+  scapy vs sockets vs what else?
+  are any of them low-leve enough?
+C
+  that virtual-device tun
+  useful as scaffolding for Rust/Forth implementations?
+
+
+First project:
+  Send a ping to www.google.com (tcp/ip)
+  Send a GET to www.google.com (http)
+  Determine what layer the sockets library implements
