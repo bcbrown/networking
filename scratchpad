@@ -22,3 +22,13 @@ TCP/IP stack in Common Lisp. http://lukego.livejournal.com/4993.html
 https://github.com/python/cpython/blob/main/Lib/socket.py
 
 http://beej.us/guide/bgnet/html/
+
+Requests uses the socket library under the hood at times, as does urllib.
+
+Tasks:
+* set up Wireshark
+  - capture some packets and read a pcap file
+  - set up rules to capture just some packets so it's easy to find the ones I create
+* use the socket library to send a echo (to google?) with some arbitrary data
+* use the socket library to send a ping (to google?)
+* use the socket libary to initiate a TCP connection
