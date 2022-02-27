@@ -75,7 +75,7 @@ print(header)
 print(data)
 
 destination = 'www.google.com'
-destination = '142.250.69.196'
+destination = '127.0.0.1'
 current_socket.sendto(packet, (destination, 1))
 
 
@@ -84,10 +84,10 @@ while True: # Loop while waiting for packet or timeout
     timeout = 10 # in seconds
     print('select')
     select_start = time.time()
-    inputready, outputready, exceptready = select.select([current_socket], [], [], timeout)
+    # inputready, outputready, exceptready = select.select([current_socket], [], [], timeout)
     print('selected')
     select_duration = (time.time() - select_start)
-    if inputready == []: # timeout
+    if False and inputready == []: # timeout
         print('timeout')
         exit()
     packet_data, address = current_socket.recvfrom(ICMP_MAX_RECV)
