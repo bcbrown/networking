@@ -1,0 +1,81 @@
+topics:
+
+git overview/internals (10 minutes)
+  dag
+    Older SCM tracked changes over time. Git tracks snapshots over time.
+    Each commit is hashed/checksummed. The hash depends upon the data in the commit as well as the parent commit's hash value. Two commits with the same data but different parents will have different hashes.
+    There's three "spaces": modified, staged, committed. If you want to simplify things you can largely ignore the staged space.
+    Git generally doesn't ever delete data; you can always go back in history to recover something deleted, AS LONG as it's ever been committed. Sometimes in order to recover data you may need an expert, though.
+    Git is distributed; you don't need a Github/Gitlab server to use Git, but most people still use one, and it's convenient.
+    It's possible to "rewrite history"; you can make changes to old commits, and it will look like it's always been that way, but you can also always view how things looked prior to the rewriting by using the "reflog".
+  Branches
+    a branch is just a convenient name for a commit; it's a little bit like a pointer in C or a variable in Python
+    two branches can both point to the same commit.
+    When you have branch checked out and make a commit, the branch now points to that new commit.
+    if you have a local branch, and a branch on a server, when you pull/push that branch, if one side has additional commits, the other side gets updated to reflect those commits
+    
+  Using git log, commit, checkout, status commands 
+    git log shows a linear view of the dag, and shows you how to move to a different point in time
+    git checkout is how you switch branches/commits or undo uncommited changes
+    if you checkout a branch, now you're on that branch. If you checkout a commit hash, now you have a "detached head" and can view files, but shouldn't modify files.
+    git commit --amend for fixing most-recent commit
+  reflog: a history of changes to the history. Just like you can use the log to browse and modify commits, you can use the reflog to browse and undo rebases, merges, squashes.
+git patterns (20 minutes)
+  work in progress:
+    choose your starting point
+    make a new, "private" branch
+    make commits frequently, maybe as often as every 15 minutes at times
+    when you're ready to share your work, rewrite history so all the changes are in just 1-2 commits
+  merging finished work into main
+    two strategies: merge and rebase
+      merge makes it clear where your work started to diverge from the main branch, and where it was incorporated back in
+      rebase makes it look like your work happened "instantaneously", and keeps a cleaner-looking history
+  merging main into work in progress
+    can either merge or rebase. I prefer to squash all my commits down to 1 and rebase onto main, to minimize painful merge conflicts
+  starting work on top of someone else's unfinished work
+    The golden rule: never start on top of someone's unfinished work if there's a chance they'll rewrite history. Never rewrite history if you've already published the branch and someone else is working on top of it. Only violate these rules if you're confident you can dig your way out of a painful mess of merge conflicts in the future.
+  cherry-picking one commit into a work in progress
+    port a bugfix to a previous release
+    If you have a big work in progress and want to merge a small portion, this is a good way to do it
+  rebasing/squashing; cleaning up before submitting a PR
+    Let your history be messy while you're hacking around; it's more important to be able to backtrack out of dead ends than to maintain a clean history
+    when you're ready for a PR, no one needs to see your messes. Clean it up.
+    Each commit in a PR should be a "single unit of work" that can stand alone. Most PRs should be a single commit.
+    When you may want more than one commit:
+      This PR contains both a refactoring/renaming and some new work. Make one commit that contains just the refactoring. Make the other commit the new work.
+      You think it's possible that reviewers will object to part of the PR, and you want the option to either merge all of it or just a portion. Split the potentially-objectionable work into a separate commit.
+    When the PR is very large, and contains multiple semantically-distinct stages. Organizing the PR to have one commit per stages makes it easier to review each stage independently.
+  using git tags for releases
+    the software engineering release cycle: source code -> build process -> build artifacts -> deployment/release of those artifacts
+    most important thing: for any source code used in a production environment, you should always be able to tell what version of code is running (via the git commit hash)
+    the main branch is the common starting point for all new work, and the agreed-upon "current state of the project". It should always be in a releaseable state (don't merge to main if something is unfinished!).
+    when you decide to make a release, make a branch for that release version (1.59.x), based upon the main branch
+    make a tag for the specific release number (1.59.0), and run the build process
+    when you need to port a bugfix, cherry-pick the bugfix from master onto the release branch; bump the version number (1.59.1), tag it, run the build process
+    All release families have a branch. All released versions have a tag.
+  addressing PR feedback and incorporating into the PR
+    At the end you want all feedback to be incorporated into the original commit that's being reviewed
+    Constantly rewriting history makes it harder for reviewers to track what you're changing
+    Every time you address feedback, add a new commit
+    When everything's approved, squash those feedback commits into the original commit
+troubleshooting (20 minutes)
+  detached HEAD
+    first, always create a temporary branch so it's easy to get back to this point
+    then, go back to the branch you're intending to be on
+    if you made any commits with a detached HEAD, cherry-pick or merge back onto the branch
+  aborting a failed merge/rebase after merge conflicts
+    git merge/rebase --abort
+    use reflog if it's all messed up to find the commit that should be the head of the branch before you attempted the merge/rebase
+    git reset --hard hash_value (HERE BE DRAGONS)
+  something's messed up locally and you just want it to go back to looking like it does on Github/Gitlab
+    git fetch origin branch_name
+    git checkout branch_name
+    git reset --hard origin/branch_name
+  strategies for making merge conflicts easier to deal with
+
+Git resources (<5 minutes)
+git book
+git flow
+useful aliases/shortcuts/commands
+
+  
